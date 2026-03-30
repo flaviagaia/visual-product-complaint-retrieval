@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import tempfile
 from typing import Iterable
 
 import pandas as pd
@@ -185,6 +186,14 @@ def ensure_demo_dataset(base_dir: str | Path) -> Path:
     csv_path = raw_dir / "complaints_catalog.csv"
     dataframe = build_demo_dataframe(image_dir)
     _write_images(image_dir, dataframe["image_file"].tolist())
-    dataframe.to_csv(csv_path, index=False)
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        suffix=".csv",
+        dir=raw_dir,
+        delete=False,
+    ) as tmp_file:
+        dataframe.to_csv(tmp_file.name, index=False)
+        temp_path = Path(tmp_file.name)
+    temp_path.replace(csv_path)
     return csv_path
-
