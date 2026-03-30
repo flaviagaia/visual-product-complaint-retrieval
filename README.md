@@ -13,6 +13,32 @@ O projeto foi desenhado para explorar o uso de embeddings multimodais no context
 - explicação do match com decomposição por texto, imagem e metadados;
 - rota opcional para `Gemini Embedding 2`, com fallback local reproduzível.
 
+### Por que o Gemini Embedding 2 é importante aqui
+
+O ponto central deste projeto é demonstrar por que um modelo de embedding multimodal muda a qualidade arquitetural de um sistema de busca para reclamações visuais.
+
+Com `Gemini Embedding 2`, texto, imagem, vídeo, áudio e documentos podem ser projetados no mesmo espaço vetorial. Para este caso de uso, isso é importante porque a reclamação real raramente chega em um único formato. Em operações de customer care e product quality, é comum receber:
+
+- descrição textual do defeito;
+- foto do produto danificado;
+- print de embalagem ou etiqueta;
+- PDF de ordem, nota ou evidência complementar.
+
+Em uma arquitetura tradicional, cada modalidade tenderia a exigir pipelines separados de representação e matching. O `Gemini Embedding 2` reduz essa fragmentação ao permitir retrieval cross-modal em um espaço semântico unificado. Na prática, isso significa que uma imagem de um frasco vazando pode recuperar não apenas imagens semelhantes, mas também descrições textuais, PDFs ou outros registros semanticamente correlatos.
+
+Do ponto de vista técnico, a importância do modelo neste projeto se apoia em quatro vantagens:
+
+1. `Espaço vetorial unificado`
+   Evita a necessidade de manter índices independentes para texto e imagem.
+2. `Entrada intercalada entre modalidades`
+   Permite compor a query com imagem + texto na mesma chamada, o que aproxima o sistema do cenário operacional real.
+3. `Cobertura multimodal nativa`
+   Amplia o projeto para evoluções futuras com vídeos curtos de defeito, áudios de atendimento e PDFs de evidência.
+4. `Flexibilidade de dimensionalidade`
+   O modelo suporta redução de dimensionalidade para equilibrar qualidade de recuperação e custo de armazenamento.
+
+Por isso, mesmo que o MVP rode localmente com um fallback reproduzível, o valor arquitetural mais forte do projeto está em estar preparado para `Gemini Embedding 2` como motor de indexação multimodal de produção.
+
 ### Arquitetura
 
 ```mermaid
@@ -101,6 +127,32 @@ python3 -m unittest discover -s tests -v
 
 - `gemini_embedding_2`: enabled when `GEMINI_API_KEY` and `google-genai` are available
 - `local_multimodal_fallback`: uses `TF-IDF`, handcrafted visual descriptors, and cosine similarity
+
+### Why Gemini Embedding 2 matters in this project
+
+The main architectural value of this repository is not just similarity search, but the ability to treat heterogeneous complaint evidence as a single retrieval problem.
+
+`Gemini Embedding 2` matters because it maps multiple modalities into one shared vector space. In a product complaint workflow, real evidence often arrives as:
+
+- free-form text written by the customer
+- product damage photos
+- packaging or label screenshots
+- supporting PDFs or other attached documents
+
+Without a multimodal embedding layer, teams usually need separate text and image pipelines and then have to reconcile their outputs downstream. A native multimodal embedding model simplifies that architecture and makes cross-modal retrieval much more natural.
+
+For this MVP, the importance of `Gemini Embedding 2` is concentrated in four properties:
+
+1. `Unified semantic space`
+   Text and image evidence can be retrieved through the same index.
+2. `Interleaved multimodal input`
+   Queries can be composed from text plus image evidence together.
+3. `Native multimodal coverage`
+   The same foundation can later support video, audio, and document evidence.
+4. `Flexible output dimensionality`
+   Storage footprint and retrieval quality can be balanced depending on operational constraints.
+
+This is why the repository keeps a local fallback for reproducibility, but is intentionally structured around `Gemini Embedding 2` as the production-grade multimodal retrieval path.
 
 ### Generated artifact
 
