@@ -105,6 +105,10 @@ python3 -m unittest discover -s tests -v
 - `catalog_size = 6`
 - `top_match_id = VC-1001`
 
+### Interface
+
+![Visual Product Complaint Retrieval](assets/visualproduct.jpg)
+
 ### Referências oficiais
 
 - [Gemini Embedding 2 announcement](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-embedding-2/)
@@ -166,3 +170,7 @@ This artifact is generated at runtime and is not versioned.
 python3 main.py
 python3 -m unittest discover -s tests -v
 ```
+
+### Interface
+
+![Visual Product Complaint Retrieval](assets/visualproduct.jpg)
